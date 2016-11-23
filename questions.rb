@@ -161,3 +161,44 @@ def x408_valid_word_abbreviation(word, abbr)
     return false if word_idx != word.length
     true
 end
+
+def x276_num_ways(n, k)
+    return 0 if n == 0 || k == 0
+    return k if n == 1
+
+    # n == 2
+    same_color = k
+    diff_color = k * (k - 1)
+
+    2.upto(n - 1) do
+        same_color, diff_color = diff_color, (k - 1) * (same_color + diff_color)
+    end
+
+    return same_color + diff_color
+end
+
+def x447_number_of_boomerangs(points)
+    map = Hash.new(0)
+    count = 0
+    points.each_with_index do |p1, i|
+        points.each_with_index do |p2, j|
+            if i == j
+                next
+            else
+                d = distance_sqrt(p1, p2)
+                map[d] += 1
+            end
+        end
+        map.values.each do |v|
+            count += v * (v - 1)
+        end
+        map.clear
+    end
+    count
+end
+
+def distance_sqrt(p1, p2)
+    x = p1[0] - p2[0]
+    y = p1[1] - p2[1]
+    return x * x + y * y
+end
