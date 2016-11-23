@@ -202,3 +202,32 @@ def distance_sqrt(p1, p2)
     y = p1[1] - p2[1]
     return x * x + y * y
 end
+
+def x388_length_longest_path(input)
+    # Default length
+    stack = [0]
+    max = 0
+
+    dir_arr = input.split("\n")
+    dir_arr.each do |path|
+        level = 0
+        unless path.rindex("\t").nil?
+            level = path.rindex("\t") + 1
+            (level + 1).upto(stack.size - 1) do
+                stack.pop
+            end
+        else
+        end
+        curr_len = stack.last + path.length - level + 1
+        stack << curr_len
+        max = [curr_len - 1, max].max if is_file?(path)
+
+    end
+
+    max
+end
+
+def is_file?(name)
+    dot_idx = name.index(".")
+    return !dot_idx.nil? && dot_idx > 0 && dot_idx < name.length
+end
