@@ -231,3 +231,58 @@ def is_file?(name)
     dot_idx = name.index(".")
     return !dot_idx.nil? && dot_idx > 0 && dot_idx < name.length
 end
+
+def x418_words_typing(sentence, rows, cols)
+    s = sentence.join(" ") + " "
+    length = s.length
+    start = 0
+    rows.times do
+        start += cols
+        if (s[start % length] == " ")
+            start += 1
+        else
+            while start > 0 && s[(start - 1) % length] != " "
+                start -= 1
+            end
+        end
+    end
+    start / length
+end
+
+def x340_length_of_longest_substring_k_distinct(s, k)
+    map = Hash.new{0}
+    left = 0
+    max = 0
+    s.each_char.with_index do |c, index|
+        map[c] += 1
+        while map.size > k
+            if map[s[left, 1]] == 1
+                map.delete(s[left, 1])
+            else
+                map[s[left, 1]] -= 1
+            end
+            left+= 1
+        end
+        max = [max, index - left + 1].max
+    end
+    max
+end
+
+def x361_max_killed_enemies(grid)
+
+end
+
+def x298_longest_consecutive(root)
+    return 0 if root.nil?
+    return [find_consecutive(root, root.left, 1), find_consecutive(root, root.right, 1), 1].max
+end
+
+def find_consecutive(root, target, length)
+    return 1 if target.nil?
+    if root.val + 1 == target.val
+        length += 1
+    else
+        length = 1
+    end
+    return [find_consecutive(target, target.left, length), find_consecutive(target, target.right, length), length].max
+end
